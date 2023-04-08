@@ -7,11 +7,14 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "prettier:write": "npx prettier --write **/*.{js,jsx,ts,tsx,json} && npx prettier --write *.{js,jsx,ts,tsx,json}",
+    "prettier": "prettier 'src/**/*.js'",
     "lint": "tsc --noEmit && eslint --ext .js,.jsx,.ts,.tsx ./",
+    "precommit": "lint-staged"
   },
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
     "expo": "~48.0.10",
+    "expo-image-picker": "~14.1.1",
     "expo-status-bar": "~1.4.4",
     "react": "18.2.0",
     "react-native": "0.71.6"
@@ -20,17 +23,35 @@
     "@babel/core": "^7.20.0",
     "@tsconfig/react-native": "^2.0.3",
     "@types/jest": "^29.5.0",
+    "@types/node": "^18.15.11",
     "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
     "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
-    "eslint": "^8.37.0",
+    "@typescript-eslint/parser": "^5.57.1",
+    "eslint": "^8.38.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-native": "^4.0.0",
+    "husky": "^8.0.3",
     "prettier": "2.8.7",
+    "pretty-quick": "^3.1.3",
     "typescript": "^5.0.4"
   },
-  "private": true
+  "private": true,
+  "prettier": {
+    "jsxBracketSameLine": true,
+    "semi": false,
+    "singleQuote": true
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  }
 }
