@@ -3,9 +3,13 @@ import * as ImagePicker from 'expo-image-picker'
 import { StyleSheet, Text, View } from 'react-native'
 import ImageViewer from './components/imageViewer'
 import Button from './components/Button'
-import React from 'react'
+import React, { useState } from 'react'
+
+const PlaceholderImage = require('./assets/images/rajaja.png')
 
 export default function App() {
+  const [selectedImage, setSelectedImage] = useState('string')
+
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
@@ -13,7 +17,7 @@ export default function App() {
     })
 
     if (!result.canceled) {
-      console.log(result)
+      setSelectedImage(result.assets[0].uri)
     } else {
       alert('You did not select any image.')
     }
@@ -21,10 +25,13 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View>
-        <ImageViewer />
+        <ImageViewer
+          placeholderImageSource={PlaceholderImage}
+          selectedImage={selectedImage}
+        />
       </View>
       <Text style={styles.title1}>Super Cool!</Text>
-      <Button label={'poggers?'}></Button>
+      <Button label={'poggers?'} onPress={pickImageAsync}></Button>
       <StatusBar style="dark" hidden={true} />
     </View>
   )
@@ -40,6 +47,5 @@ const styles = StyleSheet.create({
   title1: {
     color: '#fff',
     fontSize: 20,
-    fontFamily: 'sans-serif',
   },
 })

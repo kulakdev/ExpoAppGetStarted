@@ -1,11 +1,28 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import {
+  GestureResponderEvent,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 import React from 'react'
 import { FontAwesome } from '@expo/vector-icons'
 
-const Button = ({ label }: { label: string }) => {
+type Button = {
+  label: 'string'
+  onPress: '(event: GestureResponderEvent) => void'
+}
+
+const Button = ({
+  label,
+  onPress,
+}: {
+  label: string
+  onPress?: (event: GestureResponderEvent) => void
+}) => {
   return (
     <View>
-      <Pressable style={styles.button} onPress={() => console.log('help')}>
+      <Pressable style={styles.button} onPress={onPress}>
         <FontAwesome
           name="picture-o"
           size={18}

@@ -1,15 +1,13 @@
 import { Image, StyleSheet, View } from 'react-native'
 import React from 'react'
 
-const ImageViewer = () => {
+const ImageViewer = ({ placeholderImageSource, selectedImage }) => {
+  const imageSource =
+    selectedImage !== null ? { uri: selectedImage } : placeholderImageSource
+
   return (
     <View>
-      <Image
-        source={{
-          uri: 'https://media.discordapp.net/attachments/503468456562262026/1088233288637874277/image.png',
-        }}
-        style={styles.image}
-      />
+      <Image source={imageSource} style={styles.image} />
     </View>
   )
 }
