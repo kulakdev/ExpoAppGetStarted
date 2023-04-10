@@ -1,17 +1,20 @@
+import React, { useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import 'expo-dev-menu'
 import { StatusBar } from 'expo-status-bar'
 import * as ImagePicker from 'expo-image-picker'
-import { StyleSheet, Text, View } from 'react-native'
-import ImageViewer from './components/imageViewer'
+import ImageViewer from './components/ImageViewer'
 import Button from './components/Button'
-import React, { useState } from 'react'
 import IconButton from './components/IconButton'
 import CircleButton from './components/CircleButton'
+import EmojiPicker from './components/EmojiPicker'
 
 export const PlaceholderImage = require('./assets/images/rajaja.png')
 
 export default function App() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [showAppOptions, setShowAppOptions] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -32,13 +35,16 @@ export default function App() {
   }
 
   const onAddSticker = () => {
-    // we will implement this later
+    setIsModalVisible(true)
+  }
+
+  const onModalClose = () => {
+    setIsModalVisible(false)
   }
 
   const onSaveImageAsync = async () => {
-    // we will implement this later
+    console.log('save')
   }
-
   return (
     <View style={styles.container}>
       <View>
@@ -49,7 +55,7 @@ export default function App() {
       </View>
       <Text style={styles.title1}>Super Cool!</Text>
       {showAppOptions ? (
-        <View>
+        <View style={styles.footerContainer}>
           <View style={styles.optionsContainer}>
             <View style={styles.optionsRow}>
               <IconButton icon="refresh" label="Reset" onPress={onReset} />
@@ -71,6 +77,9 @@ export default function App() {
           />
         </View>
       )}
+      <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
+        {/* A list of emoji component will go here */}
+      </EmojiPicker>
       <StatusBar style="auto" />
     </View>
   )
@@ -89,11 +98,10 @@ const styles = StyleSheet.create({
   },
   footerContainer: {},
   optionsContainer: {
-    position: 'absolute',
-    bottom: 80,
+    position: 'relative',
   },
   optionsRow: {
-    alignItems: 'center',
-    flexDirection: 'column',
+    alignContent: 'center',
+    flexDirection: 'row',
   },
 })
