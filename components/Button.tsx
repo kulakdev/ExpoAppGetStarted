@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   GestureResponderEvent,
   Pressable,
@@ -5,21 +6,14 @@ import {
   Text,
   View,
 } from 'react-native'
-import React from 'react'
 import { FontAwesome } from '@expo/vector-icons'
 
-type Button = {
-  label: 'string'
-  onPress: '(event: GestureResponderEvent) => void'
+type typesButton = {
+  label: string
+  onPress: (event: GestureResponderEvent) => void
 }
 
-const Button = ({
-  label,
-  onPress,
-}: {
-  label: string
-  onPress?: (event: GestureResponderEvent) => void
-}) => {
+const Button = ({ label, onPress }: typesButton) => {
   return (
     <View>
       <Pressable style={styles.button} onPress={onPress}>
