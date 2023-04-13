@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Image } from 'react-native'
 import {
   TapGestureHandler,
@@ -9,21 +9,30 @@ import Animated, {
   useSharedValue,
   useAnimatedGestureHandler,
   withSpring,
+  runOnJS,
 } from 'react-native-reanimated'
 
 const AnimatedImage = Animated.createAnimatedComponent(Image)
 
 export default function EmojiSticker({ imageSize, stickerSource }) {
+  const [tappedAlready, setTappedAlready] = useState(false)
+  const onSetTapped = () => {
+    console.log('i work')
+    setTappedAlready(!tappedAlready)
+  }
+
   const scaleImage = useSharedValue(imageSize)
   const onDoubleTap = useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
-    onStart: () => {},
     onActive: () => {
       if (scaleImage.value) {
-        scaleImage.value = scaleImage.value * 2
+        scaleImage.value = scaleImage.value * (!tappedAlready ? 2 : 0.5)
       }
     },
-    onEnd: () => {},
+    onEnd: () => {
+      runOnJS(onSetTapped)()
+    },
   })
+
   const imageStyle = useAnimatedStyle(() => {
     return {
       width: withSpring(scaleImage.value),
