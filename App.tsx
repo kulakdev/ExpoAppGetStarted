@@ -10,6 +10,7 @@ import CircleButton from './components/CircleButton'
 import EmojiPicker from './components/EmojiPicker'
 import EmojiList from './components/EmojiList'
 import EmojiSticker from './components/EmojiSticker'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 export const PlaceholderImage = require('./assets/images/rajaja.png')
 
@@ -49,15 +50,17 @@ export default function App() {
     console.log('save')
   }
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       <View>
         <ImageViewer
           placeholderImageSource={PlaceholderImage}
           selectedImage={selectedImage}
         />
-        {pickedEmoji !== null ? (
-          <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
-        ) : null}
+        <View style={styles.footerContainer}>
+          {pickedEmoji !== null ? (
+            <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
+          ) : null}
+        </View>
       </View>
       <Text style={styles.title1}>Super Cool!</Text>
       {showAppOptions ? (
@@ -87,7 +90,7 @@ export default function App() {
         <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
       </EmojiPicker>
       <StatusBar style="auto" />
-    </View>
+    </GestureHandlerRootView>
   )
 }
 
@@ -97,6 +100,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#111',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  imageContainer: {
+    position: 'absolute',
   },
   title1: {
     color: '#fff',

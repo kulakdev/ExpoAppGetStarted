@@ -6,8 +6,5 @@
   "exclude": ["__tests__/**/*-test.ts"],
   "types": ["node"],
   "typeRoots": ["../node_modules/@types"],
-  "include": [
-    "wwwroot/js/**/*.ts",
-    "wwwroot/js/**/*.tsx" // <-- this needed to be added in my case
-  ]
+  "include": ["wwwroot/js/**/*.ts", "wwwroot/js/**/*.tsx"]
 }
