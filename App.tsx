@@ -13,6 +13,7 @@ import EmojiSticker from './components/EmojiSticker'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { captureRef } from 'react-native-view-shot'
 import * as MediaLibrary from 'expo-media-library'
+import domtoimage from 'dom-to-image'
 
 export const PlaceholderImage = require('./assets/images/rajaja.png')
 
@@ -87,29 +88,31 @@ export default function App() {
         </View>
       </View>
       <Text style={styles.title1}>Super Cool!</Text>
-      {showAppOptions ? (
-        <View style={styles.footerContainer}>
-          <View style={styles.optionsContainer}>
-            <View style={styles.optionsRow}>
-              <IconButton icon="refresh" label="Reset" onPress={onReset} />
-              <CircleButton onPress={onAddSticker} />
-              <IconButton
-                icon="save-alt"
-                label="Save"
-                onPress={onSaveImageAsync}
-              />
+      <View style={styles.bottomBar}>
+        {showAppOptions ? (
+          <View style={styles.footerContainer}>
+            <View style={styles.optionsContainer}>
+              <View style={styles.optionsRow}>
+                <IconButton icon="refresh" label="Reset" onPress={onReset} />
+                <CircleButton onPress={onAddSticker} />
+                <IconButton
+                  icon="save-alt"
+                  label="Save"
+                  onPress={onSaveImageAsync}
+                />
+              </View>
             </View>
           </View>
-        </View>
-      ) : (
-        <View style={styles.footerContainer}>
-          <Button label="Choose a photo" onPress={pickImageAsync} />
-          <Button
-            label="Use this photo"
-            onPress={() => setShowAppOptions(true)}
-          />
-        </View>
-      )}
+        ) : (
+          <View style={styles.footerContainer}>
+            <Button label="Choose a photo" onPress={pickImageAsync} />
+            <Button
+              label="Use this photo"
+              onPress={() => setShowAppOptions(true)}
+            />
+          </View>
+        )}
+      </View>
       <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
         <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
       </EmojiPicker>
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imageContainer: {
-    position: 'absolute',
+    position: 'relative',
   },
   title1: {
     color: '#fff',
