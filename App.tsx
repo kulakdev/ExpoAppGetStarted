@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import 'expo-dev-menu'
 import { StatusBar } from 'expo-status-bar'
@@ -11,10 +11,13 @@ import EmojiPicker from './components/EmojiPicker'
 import EmojiList from './components/EmojiList'
 import EmojiSticker from './components/EmojiSticker'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { captureRef } from 'react-native-view-shot'
+import * as MediaLibrary from 'expo-media-library'
 
 export const PlaceholderImage = require('./assets/images/rajaja.png')
 
 export default function App() {
+  const [status, requestPermission] = MediaLibrary.usePermissions()
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [showAppOptions, setShowAppOptions] = useState(false)
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -47,19 +50,40 @@ export default function App() {
   }
 
   const onSaveImageAsync = async () => {
-    console.log('save')
+    try {
+      const localUri = await captureRef(imageRef, {
+        height: 440,
+        quality: 1,
+      })
+
+      await MediaLibrary.saveToLibraryAsync(localUri)
+      if (localUri) {
+        alert('Saved!')
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }
+
+  if (status === null) {
+    requestPermission()
+  }
+
+  const imageRef = useRef(null)
+
   return (
     <GestureHandlerRootView style={styles.container}>
-      <View>
-        <ImageViewer
-          placeholderImageSource={PlaceholderImage}
-          selectedImage={selectedImage}
-        />
-        <View style={styles.footerContainer}>
-          {pickedEmoji !== null ? (
-            <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
-          ) : null}
+      <View style={styles.imageContainer}>
+        <View ref={imageRef} collapsable={false}>
+          <ImageViewer
+            placeholderImageSource={PlaceholderImage}
+            selectedImage={selectedImage}
+          />
+          <View style={styles.footerContainer}>
+            {pickedEmoji !== null ? (
+              <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
+            ) : null}
+          </View>
         </View>
       </View>
       <Text style={styles.title1}>Super Cool!</Text>
